@@ -79,6 +79,50 @@ workout-tracker/
 
 ### Setup & Run
 
+#### Option A: Recommended for Development (Fastest Hot Reload)
+
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd workout-tracker
+   ```
+
+2. **Create environment file**
+   ```bash
+   cp .env.example .env
+   ```
+   
+   ⚠️ **IMPORTANT**: In production, change the JWT secrets in `.env`!
+
+3. **Start backend + database with Docker**
+   ```bash
+   docker-compose up -d db backend
+   ```
+
+4. **Run database migrations**
+   ```bash
+   docker-compose exec backend npx prisma migrate dev --name init
+   ```
+
+5. **Seed the database with default exercises**
+   ```bash
+   docker-compose exec backend npm run prisma:seed
+   ```
+
+6. **Install frontend dependencies & run locally**
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+
+7. **Open the app**
+   - Navigate to `http://localhost:5173`
+   - ⚡ **Hot reload is instant** - any changes you make will update immediately!
+   - Create an account and start tracking! 💪
+
+#### Option B: Full Docker Setup (All Services in Docker)
+
 1. **Clone the repository**
    ```bash
    git clone <your-repo-url>
@@ -90,13 +134,11 @@ workout-tracker/
    cp .env.example .env
    ```
 
-   ⚠️ **IMPORTANT**: In production, change the JWT secrets in `.env`!
-
 3. **Start all services with Docker**
    ```bash
    docker-compose up --build
    ```
-
+   
    This will start:
    - PostgreSQL database on `localhost:5432`
    - Backend API on `http://localhost:3000`
@@ -115,6 +157,8 @@ workout-tracker/
 6. **Open the app**
    - Navigate to `http://localhost:5173`
    - Create an account and start tracking! 💪
+   
+   ⚠️ **Note**: Hot reload may be slower in Docker on Windows. For faster development, use Option A.
 
 ### Common Commands
 
@@ -137,9 +181,18 @@ docker-compose exec backend npx prisma studio
 
 ### Development
 
-- **Frontend**: Changes auto-reload via Vite HMR
-- **Backend**: Changes auto-reload via tsx watch mode
-- **Database**: Prisma migrations are tracked in `backend/prisma/migrations/`
+**Recommended Setup (Option A):**
+- **Frontend**: Run locally for instant hot reload (`npm run dev` in `frontend/`)
+- **Backend + Database**: Run in Docker for consistency
+
+**Alternative Setup (Option B):**
+- **All services in Docker**: Slower hot reload on Windows, but simpler setup
+
+**Common Development Tasks:**
+- Frontend changes: Auto-reload instantly (Option A) or within seconds (Option B)
+- Backend changes: Auto-reload via tsx watch mode in Docker
+- Database changes: Use Prisma migrations (`npx prisma migrate dev`)
+- View database: `docker-compose exec backend npx prisma studio`
 
 ## API Documentation
 
