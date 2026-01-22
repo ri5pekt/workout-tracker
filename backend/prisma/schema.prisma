@@ -1,0 +1,202 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== USERS ====================
+
+enum UserRole {
+  USER
+  ADMIN
+
+  @@map("user_role")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // bcrypt hashed
+  name      String
+  heightCm  Int?
+  dateOfBirth DateTime?
+  role      UserRole @default(USER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workouts           Workout[]
+  weightMeasurements WeightMeasurement[]
+  createdExercises   Exercise[]  // Exercises this user created
+  favoriteExercises  FavoriteExercise[]
+
+  @@map("users")
+}
+
+// ==================== EXERCISES (GLOBAL) ====================
+
+enum MeasurementType {
+  WEIGHT_REPS      // Weight(kg) × Reps - Barbell Bench Press
+  DISTANCE_TIME    // Distance(km) × Time(min) - Running
+  COUNT_TIME       // Count × Time(min) - Steps, Jumps
+  TIME             // Time only - Plank, Wall Sit
+  REPS             // Reps only - Burpees, Push-ups
+
+  @@map("measurement_type")
+}
+
+model Exercise {
+  id              String          @id @default(cuid())
+  name            String
+  measurementType MeasurementType
+  muscleGroup     String?         // chest, back, shoulders, etc.
+  iconUrl         String?
+  notes           String?
+  isSystemDefault Boolean         @default(false) // Pre-seeded exercises
+  usageCount      Int             @default(0)     // Track popularity
+
+  // Track who created this exercise
+  createdById     String?
+  createdBy       User?           @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  workoutExercises WorkoutExercise[]
+  favoritedBy      FavoriteExercise[]
+
+  @@index([createdById])
+  @@index([muscleGroup])
+  @@index([usageCount(sort: Desc)]) // For "most popular" queries
+  @@index([name]) // For search
+  @@map("exercises")
+}
+
+// ==================== FAVORITE EXERCISES ====================
+
+model FavoriteExercise {
+  id         String   @id @default(cuid())
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, exerciseId])
+  @@index([userId])
+  @@map("favorite_exercises")
+}
+
+// ==================== WORKOUTS ====================
+
+enum WorkoutStatus {
+  ONGOING
+  COMPLETED
+
+  @@map("workout_status")
+}
+
+model Workout {
+  id          String         @id @default(cuid())
+  name        String
+  status      WorkoutStatus  @default(ONGOING)
+  startedAt   DateTime       @default(now())
+  completedAt DateTime?
+  durationMin Int?           // Duration in minutes
+  caloriesBurned Int?        // Estimated calories
+  notes       String?
+  userWeight  Float?         // User weight at time of workout (kg)
+
+  userId      String
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  exercises   WorkoutExercise[]
+
+  @@index([userId, startedAt(sort: Desc)])
+  @@index([userId, status])
+  @@map("workouts")
+}
+
+// ==================== WORKOUT EXERCISES ====================
+
+model WorkoutExercise {
+  id         String   @id @default(cuid())
+  order      Int      // Order in the workout
+  notes      String?
+
+  workoutId  String
+  workout    Workout  @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Restrict)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  sets       ExerciseSet[]
+
+  @@index([workoutId, order])
+  @@index([exerciseId])
+  @@map("workout_exercises")
+}
+
+// ==================== SETS ====================
+
+model ExerciseSet {
+  id         String   @id @default(cuid())
+  setNumber  Int      // 1, 2, 3, etc.
+
+  // For WEIGHT_REPS
+  weightKg   Float?
+  reps       Int?
+
+  // For DISTANCE_TIME
+  distanceKm Float?
+  durationMin Float?  // Duration in minutes (can be decimal for seconds)
+
+  // For COUNT_TIME
+  count      Int?
+
+  // For TIME only
+  // use durationMin
+
+  // For REPS only
+  // use reps
+
+  completed  Boolean  @default(true)
+
+  workoutExerciseId String
+  workoutExercise   WorkoutExercise @relation(fields: [workoutExerciseId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([workoutExerciseId, setNumber])
+  @@map("exercise_sets")
+}
+
+// ==================== WEIGHT TRACKING ====================
+
+model WeightMeasurement {
+  id          String   @id @default(cuid())
+  weightKg    Float
+  measuredAt  DateTime @default(now())
+  notes       String?
+
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+
+  @@index([userId, measuredAt(sort: Desc)])
+  @@map("weight_measurements")
+}
