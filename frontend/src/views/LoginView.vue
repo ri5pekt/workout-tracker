@@ -18,7 +18,7 @@
             />
           </svg>
         </div>
-        <h1 class="text-3xl font-extrabold text-white tracking-tight uppercase italic">
+        <h1 class="text-3xl font-extrabold text-white tracking-tight uppercase">
           Workout-Tracker
         </h1>
         <p class="text-indigo-100 mt-2">Sign in to track your progress</p>

@@ -2,9 +2,17 @@
   <div class="min-h-screen flex flex-col">
     <!-- App Bar -->
     <header
-      class="bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4 flex justify-between items-center shrink-0"
+      class="bg-white/80 backdrop-blur-md border-b border-gray-100 px-4 py-4 flex items-center gap-3 shrink-0"
     >
-      <h1 class="text-xl font-extrabold text-gray-900">Exercises</h1>
+      <RouterLink
+        to="/"
+        class="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-colors -ml-1"
+      >
+        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </RouterLink>
+      <h1 class="text-lg font-extrabold text-gray-900 flex-1">Exercises</h1>
       <button
         class="w-9 h-9 bg-indigo-600 hover:bg-indigo-700 rounded-xl flex items-center justify-center transition-all active:scale-95"
       >
@@ -45,7 +53,7 @@
         <h2 class="text-[11px] font-black text-gray-400 uppercase tracking-[0.15em] mb-3">
           Strength Training
         </h2>
-        
+
         <div class="space-y-2">
           <!-- Exercise Item -->
           <div
@@ -97,7 +105,7 @@
         <h2 class="text-[11px] font-black text-gray-400 uppercase tracking-[0.15em] mb-3">
           Cardio
         </h2>
-        
+
         <div class="space-y-2">
           <div
             class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex items-center gap-3 active:bg-gray-50 transition-colors"

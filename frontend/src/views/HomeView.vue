@@ -2,7 +2,7 @@
   <div class="min-h-screen flex flex-col">
     <!-- App Bar -->
     <header
-      class="bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4 flex justify-between items-center shrink-0"
+      class="bg-white/80 backdrop-blur-md border-b border-gray-100 px-4 py-4 flex justify-between items-center shrink-0"
     >
       <div class="flex items-center gap-2">
         <div
@@ -22,7 +22,7 @@
             />
           </svg>
         </div>
-        <span class="font-extrabold text-gray-900 tracking-tight text-sm uppercase italic"
+        <span class="font-extrabold text-gray-900 tracking-tight text-sm uppercase"
           >workout-tracker</span
         >
       </div>

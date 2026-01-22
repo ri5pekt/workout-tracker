@@ -214,13 +214,138 @@ More endpoints coming soon as we build out workout and exercise features!
 
 Detailed UI mockups and design references are available in `docs/screens.html`. Open it in a browser to see all screen designs.
 
+## 🎯 Current Progress
+
+### ✅ Completed
+- [x] **Project Setup**: Full monorepo structure with Docker compose
+- [x] **Database Schema**: Complete Prisma schema with all models (User, Exercise, Workout, WorkoutExercise, ExerciseSet, WeightMeasurement)
+- [x] **Authentication**: JWT-based auth with register/login/logout/refresh endpoints
+- [x] **Frontend Screens**: 
+  - Login/Register pages with validation
+  - Home dashboard with bottom navigation
+  - Profile screen with user info and logout
+  - Exercises screen (placeholder UI)
+- [x] **Seed Data**: 18 default exercises across all muscle groups and measurement types
+- [x] **UI/UX**: Tailwind CSS styling with Manrope font, mobile-first design (max-width 430px)
+- [x] **Bottom Navigation**: 4-tab layout (Today, Exercises, History, Profile)
+
+### 🚧 Next Steps (Priority Order)
+
+#### Phase 1: Exercise Library (Foundation)
+1. **Exercise API Endpoints**
+   - `GET /api/exercises` - List all exercises (with filtering by muscle group, search)
+   - `POST /api/exercises` - Create custom exercise
+   - `GET /api/exercises/:id` - Get single exercise
+   - `PATCH /api/exercises/:id` - Update exercise
+   - `DELETE /api/exercises/:id` - Delete exercise (only if not used in workouts)
+
+2. **Connect Exercises Screen to Backend**
+   - Replace placeholder data with real API calls
+   - Implement search functionality
+   - Group exercises by muscle group
+   - Show measurement type labels
+   - Handle loading/error states
+
+3. **Add New Exercise Screen**
+   - Build form UI (name, muscle group dropdown, measurement type dropdown)
+   - Icon upload functionality
+   - Form validation
+   - API integration
+
+#### Phase 2: Workout Creation & Logging
+4. **Workout API Endpoints**
+   - `POST /api/workouts` - Create new workout
+   - `GET /api/workouts/:id` - Get workout details with exercises and sets
+   - `PATCH /api/workouts/:id` - Update workout (name, notes)
+   - `POST /api/workouts/:id/exercises` - Add exercise to workout
+   - `DELETE /api/workouts/:id/exercises/:exerciseId` - Remove exercise from workout
+   - `POST /api/workouts/:id/finish` - Mark workout as completed
+   - `DELETE /api/workouts/:id` - Delete workout
+
+5. **Exercise Set API Endpoints**
+   - `POST /api/workouts/:workoutId/exercises/:exerciseId/sets` - Add set
+   - `PATCH /api/sets/:setId` - Update set (weight, reps, distance, time, etc.)
+   - `DELETE /api/sets/:setId` - Delete set
+
+6. **Workout Screen Implementation**
+   - Create WorkoutView component
+   - Implement "New Workout" button from Home
+   - Add exercise selection (modal/sheet with exercise library)
+   - Set logging inputs (different layouts for Weight×Reps, Distance×Time, etc.)
+   - Timer functionality
+   - Auto-save functionality
+   - Finish workout action
+   - Empty state handling
+
+#### Phase 3: History & Progress
+7. **History API Endpoints**
+   - `GET /api/workouts` - List workouts (with pagination, date filtering)
+   - `GET /api/exercises/:id/history` - Get exercise history across all workouts
+
+8. **History Timeline Screen**
+   - Fetch and display workouts grouped by date
+   - Show workout cards with duration, calories
+   - Navigate to workout detail view
+   - Filter by date range
+
+9. **History Calendar Screen**
+   - Monthly calendar view
+   - Show workout indicators (dots/badges)
+   - Tap day to see workouts
+   - Navigate between months
+
+10. **Exercise History Screen**
+    - Fetch exercise history from API
+    - Display sets/reps/weight in table format
+    - Show progression over time
+    - Link from workout exercise cards
+
+#### Phase 4: Profile & Settings
+11. **Weight Tracking**
+    - `POST /api/users/weight` - Add weight measurement
+    - `GET /api/users/weight` - Get weight history
+    - `DELETE /api/users/weight/:id` - Delete measurement
+    - Build weight tracking UI
+    - Chart/graph for weight progression
+
+12. **Profile Management**
+    - Edit Profile form (name, height, DOB)
+    - Update user API integration
+    - Avatar upload (optional)
+
+#### Phase 5: Polish & Optimization
+13. **Calorie Calculation**
+    - Implement calorie estimation logic (based on exercise type, duration, user weight)
+    - Show on workout cards
+
+14. **Error Handling & Loading States**
+    - Global error handling
+    - Toast notifications
+    - Skeleton loaders
+    - Optimistic updates
+
+15. **Performance**
+    - Implement proper caching
+    - Optimize API queries
+    - Add indexes to database
+
+16. **Testing & Deployment**
+    - Add unit tests (Vitest)
+    - E2E tests (Playwright - optional)
+    - Production Docker setup
+    - Environment configuration
+
+## 📝 Notes
+
+- **Frontend runs locally** for best dev experience (instant hot reload)
+- **Backend + DB in Docker** for consistency
+- **Database is global**: Users can see and use exercises created by others
+- **Measurement Types**: 5 types supported (Weight×Reps, Distance×Time, Count×Time, Time, Reps)
+- **Units**: Default to metric (kg, km)
+
 ## Contributing
 
-This is an initial setup. More features coming soon:
-- Workout CRUD operations
-- Exercise library management
-- Progress tracking and analytics
-- Weight measurement tracking
+Contributions welcome! See "Next Steps" section above for planned features.
 
 ## License
 

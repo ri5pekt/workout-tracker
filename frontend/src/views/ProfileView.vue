@@ -2,15 +2,17 @@
   <div class="min-h-screen flex flex-col bg-gray-50">
     <!-- App Bar -->
     <header
-      class="bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4 flex justify-between items-center shrink-0"
+      class="bg-white/80 backdrop-blur-md border-b border-gray-100 px-4 py-4 flex items-center gap-3 shrink-0"
     >
-      <h1 class="text-xl font-extrabold text-gray-900">Profile</h1>
       <RouterLink
         to="/"
-        class="text-indigo-600 hover:text-indigo-700 font-bold text-sm"
+        class="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-colors -ml-1"
       >
-        Done
+        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path>
+        </svg>
       </RouterLink>
+      <h1 class="text-lg font-extrabold text-gray-900">Profile</h1>
     </header>
 
     <!-- Main Content Area (Scrollable) -->
@@ -56,7 +58,7 @@
         <h3 class="text-[11px] font-black text-gray-400 uppercase tracking-[0.15em] mb-3 px-1">
           Settings
         </h3>
-        
+
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <!-- Edit Profile -->
           <button
@@ -105,7 +107,7 @@
         <h3 class="text-[11px] font-black text-gray-400 uppercase tracking-[0.15em] mb-3 px-1">
           Account
         </h3>
-        
+
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <button
             @click="handleLogout"
