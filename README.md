@@ -91,7 +91,7 @@ workout-tracker/
    ```bash
    cp .env.example .env
    ```
-   
+
    ⚠️ **IMPORTANT**: In production, change the JWT secrets in `.env`!
 
 3. **Start backend + database with Docker**
@@ -138,7 +138,7 @@ workout-tracker/
    ```bash
    docker-compose up --build
    ```
-   
+
    This will start:
    - PostgreSQL database on `localhost:5432`
    - Backend API on `http://localhost:3000`
@@ -157,7 +157,7 @@ workout-tracker/
 6. **Open the app**
    - Navigate to `http://localhost:5173`
    - Create an account and start tracking! 💪
-   
+
    ⚠️ **Note**: Hot reload may be slower in Docker on Windows. For faster development, use Option A.
 
 ### Common Commands
